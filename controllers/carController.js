@@ -26,6 +26,25 @@ export const addCar = async (req, res) => {
   }
 };
 
+// Get a single car by ID
+export const getCarById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the car by ID
+    const car = await Car.findById(id);
+
+    if (!car) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+
+    res.status(200).json(car);
+  } catch (err) {
+    console.error(err); // Log for debugging
+    res.status(500).json({ error: 'Failed to fetch car', details: err.message });
+  }
+};
+
 // Get all cars (for Renters)
 export const getAllCars = async (req, res) => {
   try {
@@ -53,7 +72,6 @@ export const getCarsByUser = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user cars', details: err.message });
   }
 };
-
 
 // Update car details (for Listers)
 export const updateCar = async (req, res) => {
